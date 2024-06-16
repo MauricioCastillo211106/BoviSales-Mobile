@@ -1,17 +1,22 @@
-# bovi_sales
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # BoviSales-Mobile
+
+**BoviSales-Mobile** es la app móvil de BoviSales, creada para mejorar la gestión y comercialización de ganado bovino. Desarrollada en **Flutter**, permite registrar y acceder a información detallada del ganado, optimizando la eficiencia y facilitando las ventas.
+
+## Características
+
+- **Registro de Ganado**: Seguimiento detallado de la salud y alimentación.
+- **Gestión de Ventas**: Administración eficiente de transacciones.
+- **Seguridad**: Acceso seguro y centralizado a la información.
+
+## Tecnologías Utilizadas
+
+- **Flutter en arquitectura hecagonal**: Desarrollo móvil multiplataforma.
+- **Backend en Arquitectura Hexagonal**: Integración robusta y flexible.
+
+## Instalación
+
+Sigue estos pasos para poner en marcha la app en tu entorno local:
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu_usuario/BoviSales-Mobile.git
