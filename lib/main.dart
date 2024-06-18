@@ -1,3 +1,4 @@
+import 'package:bovi_sales/presentation/bindings/login_binding.dart';
 import 'package:bovi_sales/presentation/bindings/onboarding_binding.dart';
 import 'package:bovi_sales/presentation/bindings/signup_binding.dart';
 import 'package:bovi_sales/presentation/pages/login_page.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/login',
-          page: () => LoginPage(), // Define la página de inicio de sesión
+          page: () => LoginPage(),
+          binding: LoginBinding(), // Define la página de inicio de sesión
         ),
       ],
       theme: ThemeData(
