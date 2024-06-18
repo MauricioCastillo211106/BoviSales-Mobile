@@ -1,10 +1,11 @@
 import 'package:bovi_sales/presentation/bindings/onboarding_binding.dart';
 import 'package:bovi_sales/presentation/bindings/signup_binding.dart';
+import 'package:bovi_sales/presentation/pages/login_page.dart';
 import 'package:bovi_sales/presentation/pages/onboarding_page.dart';
 import 'package:bovi_sales/presentation/pages/signup_page.dart';
+import 'package:bovi_sales/presentation/pages/login_page.dart'; // Importa la página de inicio de sesión
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -21,12 +22,16 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/',
           page: () => OnboardingPage(),
-          binding: OnboardingBinding(), // Aunque no hace nada ahora, está preparado para el futuro.
+          binding: OnboardingBinding(),
         ),
         GetPage(
           name: '/signup',
           page: () => SignupPage(),
           binding: SignupBinding(),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => LoginPage(), // Define la página de inicio de sesión
         ),
       ],
       theme: ThemeData(
