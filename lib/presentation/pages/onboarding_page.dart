@@ -82,7 +82,7 @@ class OnboardingPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Iniciar Sesión pulsado');
-                      //Get.toNamed('/login'); Navegar a la página de inicio de sesión, si es necesario
+                      Get.toNamed('/login'); //Navegar a la página de inicio de sesión, si es necesario
                     },
                     child: Text(
                       'Iniciar Sesión',

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 class LoginController extends GetxController {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -45,21 +45,29 @@ class LoginController extends GetxController {
         'password': password
       });
 
-      print("Enviando solicitud a $url con body: $body y headers: $headers");
-
       var response = await http.post(
         Uri.parse(url),
         headers: headers,
         body: body,
       );
 
-      print("Código de respuesta: ${response.statusCode}");
-      print("Cuerpo de la respuesta: ${response.body}");
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         print("Login exitoso: $data");
-        Get.toNamed('/home'); // Redirigir a la página principal o a la página de inicio
+
+        // Guardar datos en GetStorage
+        final storage = GetStorage();
+        storage.write('user', {
+          'token': data['token'],
+          'name': data['name'],
+          'email': data['email'],
+          'phone_number': data['phone_number'],
+          'suscription': data['suscription'],
+          'verification': data['verification'],
+          'image': data['image']
+        });
+
+        Get.toNamed('/profile'); // Navegar a la página de perfil
       } else {
         final error = jsonDecode(response.body);
         Get.snackbar('Error', error['message'],

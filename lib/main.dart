@@ -1,14 +1,22 @@
-import 'package:bovi_sales/presentation/bindings/login_binding.dart';
-import 'package:bovi_sales/presentation/bindings/onboarding_binding.dart';
-import 'package:bovi_sales/presentation/bindings/signup_binding.dart';
-import 'package:bovi_sales/presentation/pages/login_page.dart';
-import 'package:bovi_sales/presentation/pages/onboarding_page.dart';
-import 'package:bovi_sales/presentation/pages/signup_page.dart';
-import 'package:bovi_sales/presentation/pages/login_page.dart'; // Importa la página de inicio de sesión
+// lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:bovi_sales/presentation/bindings/login_binding.dart';
+import 'package:bovi_sales/presentation/bindings/profile_binding.dart';
+import 'package:bovi_sales/presentation/pages/login_page.dart';
+import 'presentation/bindings/onboarding_binding.dart';
+import 'presentation/bindings/signup_binding.dart';
+import 'presentation/pages/onboarding_page.dart';
+import 'presentation/pages/signup_page.dart';
+import 'presentation/pages/profile_page.dart';
+import 'presentation/pages/home_page.dart';
+import 'presentation/pages/ganado_page.dart';
+import 'presentation/pages/publicaciones_page.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init(); // Inicializa GetStorage
   runApp(MyApp());
 }
 
@@ -33,7 +41,24 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/login',
           page: () => LoginPage(),
-          binding: LoginBinding(), // Define la página de inicio de sesión
+          binding: LoginBinding(),
+        ),
+        GetPage(
+          name: '/profile',
+          page: () => ProfilePage(),
+          binding: ProfileBinding(),
+        ),
+        GetPage(
+          name: '/home',
+          page: () => HomePage(),
+        ),
+        GetPage(
+          name: '/publicaciones',
+          page: () => PublicacionesPage(),
+        ),
+        GetPage(
+          name: '/ganado',
+          page: () => GanadoPage(),
         ),
       ],
       theme: ThemeData(
