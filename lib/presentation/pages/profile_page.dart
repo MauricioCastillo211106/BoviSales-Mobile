@@ -4,8 +4,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:bovi_sales/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:bovi_sales/presentation/controllers/profile_controller.dart';
 
+import '../controllers/navigation_controller.dart';
+
 class ProfilePage extends StatelessWidget {
   final ProfileController profileController = Get.put(ProfileController());
+  final NavigationController navigationController = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +18,7 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Cuenta', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
         centerTitle: true,
@@ -97,25 +101,12 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: 3, // Index de la página de perfil
+      bottomNavigationBar: Obx(() => CustomBottomNavigationBar(
+        selectedIndex: navigationController.selectedIndex.value,
         onTap: (index) {
-          switch (index) {
-            case 0:
-              Get.toNamed('/home');
-              break;
-            case 1:
-              Get.toNamed('/publicaciones');
-              break;
-            case 2:
-              Get.toNamed('/ganado');
-              break;
-            case 3:
-            // Ya estamos en la página de perfil
-              break;
-          }
+          navigationController.onItemTapped(index);
         },
-      ),
+      )),
     );
   }
 

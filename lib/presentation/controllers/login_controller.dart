@@ -67,7 +67,7 @@ class LoginController extends GetxController {
           'image': data['image']
         });
 
-        Get.toNamed('/profile'); // Navegar a la página de perfil
+        Get.toNamed('/home'); // Navegar a la página de perfil
       } else {
         final error = jsonDecode(response.body);
         Get.snackbar('Error', error['message'],

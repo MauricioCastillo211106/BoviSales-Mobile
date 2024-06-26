@@ -10,6 +10,7 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Crear cuenta'),
         centerTitle: true,
         backgroundColor: Colors.white,
