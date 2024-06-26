@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:bovi_sales/core/models/bovino_model.dart';
 
 class HomeController extends GetxController {
-  var selectedIndex = 0.obs;
   var bovinos = <Bovino>[].obs;
 
   @override

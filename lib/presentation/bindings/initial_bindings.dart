@@ -1,14 +1,18 @@
+// lib/presentation/bindings/initial_binding.dart
 import 'package:get/get.dart';
-import '../controllers/home_controller.dart';
 import '../controllers/navigation_controller.dart';
-import '../controllers/signup_controller.dart';
+import '../controllers/home_controller.dart';
+import '../controllers/ganado_controller.dart';
+import '../controllers/publicaciones_controller.dart';
+import '../controllers/custom_search_controller.dart';
 
-class InitialBindings extends Bindings {
+class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    // Aquí puedes inicializar dependencias globales
     Get.lazyPut<NavigationController>(() => NavigationController());
     Get.lazyPut<HomeController>(() => HomeController());
-    Get.put(SignupController(), permanent: true); // Inicializa el controlador de registro
+    Get.lazyPut<GanadoController>(() => GanadoController());
+    Get.lazyPut<PublicacionesController>(() => PublicacionesController());
+    Get.lazyPut<CustomSearchController>(() => CustomSearchController());
   }
 }

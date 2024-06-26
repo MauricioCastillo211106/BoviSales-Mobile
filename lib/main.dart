@@ -1,13 +1,13 @@
+// lib/main.dart
+import 'package:bovi_sales/presentation/bindings/initial_bindings.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
-import 'presentation/bindings/initial_bindings.dart';
-import 'presentation/pages/home_page.dart';
+import 'package:get/get.dart';
 import 'presentation/pages/onboarding_page.dart';
 import 'presentation/pages/signup_page.dart';
 import 'presentation/pages/login_page.dart';
 import 'presentation/pages/profile_page.dart';
+import 'presentation/pages/home_page.dart';
 import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/publicaciones_page.dart';
 
@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
+      initialBinding: InitialBinding(),
       getPages: [
         GetPage(
           name: '/',
           page: () => OnboardingPage(),
-          binding: InitialBindings(),
         ),
         GetPage(
           name: '/signup',
@@ -46,12 +46,12 @@ class MyApp extends StatelessWidget {
           page: () => HomePage(),
         ),
         GetPage(
-          name: '/publicaciones',
-          page: () => PublicacionesPage(),
+          name: '/ganado',
+          page: () => GanadoPage(),
         ),
         GetPage(
-          name: '/venta',
-          page: () => GanadoPage(),
+          name: '/publicaciones',
+          page: () => PublicacionesPage(),
         ),
       ],
       theme: ThemeData(

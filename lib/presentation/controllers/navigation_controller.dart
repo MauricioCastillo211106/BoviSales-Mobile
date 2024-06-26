@@ -14,7 +14,7 @@ class NavigationController extends GetxController {
         Get.toNamed('/publicaciones');
         break;
       case 2:
-        Get.toNamed('/venta');
+        Get.toNamed('/ganado');
         break;
       case 3:
         Get.toNamed('/profile');

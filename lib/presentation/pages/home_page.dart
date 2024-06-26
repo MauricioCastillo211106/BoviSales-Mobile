@@ -1,35 +1,43 @@
 // lib/presentation/pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/navigation_controller.dart';
 import '../controllers/home_controller.dart';
+import '../controllers/navigation_controller.dart';
+import '../controllers/custom_search_controller.dart' as custom;
 import '../widgets/custom_bottom_navigation_bar.dart';
+import '../widgets/search_bar.dart' as custom_search;
 
 class HomePage extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
-  final NavigationController navigationController = Get.find();
+  final NavigationController navigationController = Get.find<NavigationController>();
+  final custom.CustomSearchController searchController = Get.put(custom.CustomSearchController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('BoviSales'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Buscar Bovino',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+          Container(
+            color: Colors.black,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 8.0),
+            child: Column(
+              children: [
+                AppBar(
+                  automaticallyImplyLeading: false,
+                  centerTitle: true,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
                 ),
-              ),
+                custom_search.SearchBar(
+                  controller: searchController.searchController.value,
+                  onSearch: (query) {
+                    // Implementa la lógica de búsqueda aquí
+                  },
+                  onFilter: () {
+                    // Implementa la lógica de filtrado aquí
+                  },
+                ),
+              ],
             ),
           ),
           Padding(
@@ -117,12 +125,12 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
+      bottomNavigationBar: Obx(() => CustomBottomNavigationBar(
         selectedIndex: navigationController.selectedIndex.value,
         onTap: (index) {
           navigationController.onItemTapped(index);
         },
-      ),
+      )),
     );
   }
 }

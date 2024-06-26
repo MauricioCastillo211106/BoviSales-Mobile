@@ -1,6 +1,7 @@
 // lib/presentation/widgets/custom_bottom_navigation_bar.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/navigation_controller.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -17,7 +18,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
       currentIndex: selectedIndex,
       onTap: onTap,
       unselectedItemColor: Colors.grey, // Color para los iconos no seleccionados
-      items: const <BottomNavigationBarItem>[
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
@@ -36,6 +37,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
       ],
       selectedItemColor: Color(0xFFC67C4E),
+      backgroundColor: Colors.black, // Fondo negro para el BottomNavigationBar
     );
   }
 }
