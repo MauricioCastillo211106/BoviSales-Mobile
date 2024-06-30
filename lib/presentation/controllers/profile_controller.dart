@@ -17,6 +17,6 @@ class ProfileController extends GetxController {
   void logOut() {
     // Lógica para cerrar sesión
     GetStorage().erase(); // Eliminar datos de usuario
-    Get.offAllNamed('/login'); // Redirigir al inicio de sesión
+    Get.offAllNamed('/'); // Redirigir al inicio de sesión
   }
 }

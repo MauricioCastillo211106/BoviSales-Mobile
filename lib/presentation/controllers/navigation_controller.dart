@@ -1,4 +1,3 @@
-// lib/presentation/controllers/navigation_controller.dart
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
@@ -14,7 +13,7 @@ class NavigationController extends GetxController {
         Get.toNamed('/publicaciones');
         break;
       case 2:
-        Get.toNamed('/ganado');
+        Get.toNamed('/venta');
         break;
       case 3:
         Get.toNamed('/profile');
@@ -22,5 +21,9 @@ class NavigationController extends GetxController {
       default:
         Get.toNamed('/home');
     }
+  }
+
+  void resetIndex() {
+    selectedIndex.value = 0;
   }
 }

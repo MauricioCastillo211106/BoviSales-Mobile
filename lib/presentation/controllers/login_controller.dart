@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../controllers/navigation_controller.dart'; // Asegúrate de importar el controlador de navegación
+
 class LoginController extends GetxController {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -66,6 +68,10 @@ class LoginController extends GetxController {
           'verification': data['verification'],
           'image': data['image']
         });
+
+        // Restablecer el índice del controlador de navegación
+        final NavigationController navigationController = Get.find<NavigationController>();
+        navigationController.resetIndex();
 
         Get.toNamed('/home'); // Navegar a la página de perfil
       } else {

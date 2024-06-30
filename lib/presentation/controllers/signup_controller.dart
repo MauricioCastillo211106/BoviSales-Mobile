@@ -1,9 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'navigation_controller.dart';
 
 class SignupController extends GetxController {
   var imagePath = ''.obs;
@@ -47,34 +49,31 @@ class SignupController extends GetxController {
     if (validateInputs()) {
       isLoading.value = true;
       try {
-        var url = Uri.parse('http://10.0.2.2:3001/api/v1/user/'); // Dirección de tu backend
-        var body = {
-          'name': nameController.text,
-          'email': emailController.text,
-          'password': passwordController.text,
-          'phone_number': phoneNumberController.text,
-        };
+        var request = http.MultipartRequest('POST', Uri.parse('http://10.0.2.2:3001/api/v1/user/'));
+        request.fields['name'] = nameController.text;
+        request.fields['email'] = emailController.text;
+        request.fields['password'] = passwordController.text;
+        request.fields['phone_number'] = phoneNumberController.text;
 
         if (imagePath.value.isNotEmpty) {
-          body['image'] = imagePath.value;
+          request.files.add(await http.MultipartFile.fromPath('image', imagePath.value));
         } else {
-          body['image'] = "aaaaada"; // Asegúrate de que este campo se ajuste a las expectativas de tu backend
+          request.fields['image'] = ''; // Ajusta este campo según las expectativas de tu backend
         }
 
-        var response = await http.post(
-          url,
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(body),
-        );
+        var response = await request.send();
 
         if (response.statusCode == 201) {
-          var responseData = jsonDecode(response.body);
-          print('Usuario creado: $responseData');
+          var responseData = await http.Response.fromStream(response);
+          print('Usuario creado: ${responseData.body}');
           // Redirigir a la página de inicio de sesión después de la creación exitosa del usuario
+          final NavigationController navigationController = Get.find<NavigationController>();
+          navigationController.resetIndex();
           Get.toNamed('/login');
         } else {
           print('Error al crear el usuario: ${response.statusCode}');
-          print('Response body: ${response.body}');
+          var responseData = await http.Response.fromStream(response);
+          print('Response body: ${responseData.body}');
         }
       } catch (e) {
         print('Error al crear el usuario: $e');
