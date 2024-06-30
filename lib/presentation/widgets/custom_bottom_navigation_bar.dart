@@ -23,14 +23,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
+        /*BottomNavigationBarItem(
           icon: Icon(Icons.list),
           label: 'Publicaciones',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.shopping_bag),
           label: 'Venta',
-        ),
+        ),*/
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Perfil',

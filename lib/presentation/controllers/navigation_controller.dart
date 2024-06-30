@@ -17,13 +17,13 @@ class NavigationController extends GetxController {
           homeController.fetchBovinos(); // Refrescar los datos cada vez que se navega a home
         });
         break;
-      case 1:
+      /*case 1:
         Get.toNamed('/publicaciones');
         break;
       case 2:
         Get.toNamed('/venta');
-        break;
-      case 3:
+        break;*/
+      case 1:
         Get.toNamed('/profile');
         break;
       default:

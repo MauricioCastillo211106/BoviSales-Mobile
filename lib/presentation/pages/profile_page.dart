@@ -50,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            if (!isSubscribed)
+            /*if (!isSubscribed)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: TextButton.icon(
@@ -67,9 +67,9 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             Divider(),
-            // Opciones de perfil con tarjetas y sombras
+            /*// Opciones de perfil con tarjetas y sombras
             _buildProfileOption(
               icon: Icons.list,
               title: 'Mi Ganado',
@@ -90,7 +90,7 @@ class ProfilePage extends StatelessWidget {
               onTap: () {
                 // Acción para recuperar contraseña
               },
-            ),
+            ),*/
             _buildProfileOption(
               icon: Icons.exit_to_app,
               title: 'Cerrar Sesión',

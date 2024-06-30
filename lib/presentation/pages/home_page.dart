@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                 ),
-                custom_search.SearchBar(
+                /*custom_search.SearchBar(
                   controller: searchController.searchController.value,
                   onSearch: (query) {
                     // Implementa la lógica de búsqueda aquí
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                   onFilter: () {
                     // Implementa la lógica de filtrado aquí
                   },
-                ),
+                ),*/
               ],
             ),
           ),
