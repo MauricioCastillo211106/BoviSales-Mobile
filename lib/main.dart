@@ -1,3 +1,6 @@
+import 'package:bovi_sales/presentation/bindings/home_binding.dart';
+import 'package:bovi_sales/presentation/pages/add_cow_page.dart';
+import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
 import 'package:bovi_sales/presentation/pages/ganado_page.dart';
 import 'package:bovi_sales/presentation/pages/home_page.dart';
 import 'package:bovi_sales/presentation/pages/publicaciones_page.dart';
@@ -53,6 +56,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/home',
           page: () => HomePage(),
+          binding: HomeBinding(),
         ),
         GetPage(
           name: '/publicaciones',
@@ -62,6 +66,11 @@ class MyApp extends StatelessWidget {
           name: '/venta',
           page: () => GanadoPage(),
         ),
+        GetPage(
+          name: '/add_cow',
+          page: () => AddCowPage(),
+        ),
+        GetPage(name: '/details', page: () => BovinoDetailsPage()),
       ],
       theme: ThemeData(
         primarySwatch: Colors.orange,

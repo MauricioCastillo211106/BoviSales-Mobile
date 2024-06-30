@@ -1,18 +1,39 @@
-// lib/presentation/controllers/home_controller.dart
 import 'package:get/get.dart';
-import 'package:bovi_sales/core/models/bovino_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../../core/models/bovino_model.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomeController extends GetxController {
   var bovinos = <Bovino>[].obs;
+  final user = GetStorage().read('user') ?? {};
 
   @override
   void onInit() {
     super.onInit();
-    // Cargar datos de los bovinos aquí
-    bovinos.addAll([
-      Bovino('Lola', 'Holstein', 874520, 'https://link.to/image1.jpg'),
-      Bovino('Lola', 'Holstein', 874520, 'https://link.to/image2.jpg'),
-      // Agrega más bovinos según sea necesario
-    ]);
+    fetchBovinos();
+  }
+
+  Future<void> fetchBovinos() async {
+    try {
+      final userId = user['id'];
+      if (userId == null) {
+        throw Exception('User ID is null');
+      }
+      final response = await http.get(Uri.parse('http://10.0.2.2:3001/api/v1/user/cattle/$userId'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['data']; // Asegúrate de acceder a la clave correcta
+        bovinos.value = data.map((json) => Bovino.fromJson(json)).toList();
+      } else {
+        print('Failed to load bovinos: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching bovinos: $e');
+    }
+  }
+
+  void refreshBovinos() {
+    fetchBovinos();
   }
 }

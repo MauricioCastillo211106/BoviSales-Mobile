@@ -60,6 +60,7 @@ class LoginController extends GetxController {
         // Guardar datos en GetStorage
         final storage = GetStorage();
         storage.write('user', {
+          'id': data['id'], // Asegúrate de guardar el ID correctamente
           'token': data['token'],
           'name': data['name'],
           'email': data['email'],

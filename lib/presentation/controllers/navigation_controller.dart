@@ -1,13 +1,21 @@
 import 'package:get/get.dart';
+import '../controllers/home_controller.dart'; // Importa el HomeController
 
 class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
+
+  void resetIndex() {
+    selectedIndex.value = 0;
+  }
 
   void onItemTapped(int index) {
     selectedIndex.value = index;
     switch (index) {
       case 0:
-        Get.toNamed('/home');
+        Get.toNamed('/home')?.then((_) {
+          HomeController homeController = Get.find<HomeController>();
+          homeController.fetchBovinos(); // Refrescar los datos cada vez que se navega a home
+        });
         break;
       case 1:
         Get.toNamed('/publicaciones');
@@ -21,9 +29,5 @@ class NavigationController extends GetxController {
       default:
         Get.toNamed('/home');
     }
-  }
-
-  void resetIndex() {
-    selectedIndex.value = 0;
   }
 }

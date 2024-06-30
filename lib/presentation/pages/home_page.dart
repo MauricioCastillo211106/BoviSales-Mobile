@@ -6,6 +6,7 @@ import '../controllers/navigation_controller.dart';
 import '../controllers/custom_search_controller.dart' as custom;
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/search_bar.dart' as custom_search;
+import '../widgets/bovino_card.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
         children: [
           Container(
             color: Colors.black,
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 8.0),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 10.0),
             child: Column(
               children: [
                 AppBar(
@@ -43,7 +44,9 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed('/add_cow');
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFC67C4E),
                 shape: RoundedRectangleBorder(
@@ -57,77 +60,33 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: homeController.bovinos.length,
-              itemBuilder: (context, index) {
-                final bovino = homeController.bovinos[index];
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+            child: Obx(() {
+              if (homeController.bovinos.isEmpty) {
+                return Center(child: Text('No hay bovinos disponibles'));
+              } else {
+                return GridView.builder(
+                  padding: const EdgeInsets.all(16.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 0.75,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          child: Image.network(
-                            bovino.imageUrl,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.error);
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              bovino.name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              bovino.breed,
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              bovino.id.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFC67C4E),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  itemCount: homeController.bovinos.length,
+                  itemBuilder: (context, index) {
+                    final bovino = homeController.bovinos[index];
+                    return BovinoCard(bovino: bovino);
+                  },
                 );
-              },
-            ),
+              }
+            }),
           ),
         ],
       ),
       bottomNavigationBar: Obx(() => CustomBottomNavigationBar(
         selectedIndex: navigationController.selectedIndex.value,
         onTap: (index) {
+          homeController.fetchBovinos();  // Fetch bovinos every time the tab is tapped
           navigationController.onItemTapped(index);
         },
       )),
