@@ -6,7 +6,8 @@ import '../controllers/navigation_controller.dart';
 import '../controllers/custom_search_controller.dart' as custom;
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/search_bar.dart' as custom_search;
-import '../widgets/bovino_card.dart';
+import '../widgets/bovino_card.dart'; // Asegúrate de importar BovinoCard
+import 'bovino_details_page.dart'; // Importa la página de detalles
 
 class HomePage extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
@@ -75,7 +76,12 @@ class HomePage extends StatelessWidget {
                   itemCount: homeController.bovinos.length,
                   itemBuilder: (context, index) {
                     final bovino = homeController.bovinos[index];
-                    return BovinoCard(bovino: bovino);
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => BovinoDetailsPage(bovino: bovino));
+                      },
+                      child: BovinoCard(bovino: bovino),
+                    );
                   },
                 );
               }
@@ -86,7 +92,6 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: Obx(() => CustomBottomNavigationBar(
         selectedIndex: navigationController.selectedIndex.value,
         onTap: (index) {
-          homeController.fetchBovinos();  // Fetch bovinos every time the tab is tapped
           navigationController.onItemTapped(index);
         },
       )),
