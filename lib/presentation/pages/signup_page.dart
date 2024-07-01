@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
+import 'package:flutter/services.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupPage extends StatelessWidget {
@@ -105,6 +107,9 @@ class SignupPage extends StatelessWidget {
             TextField(
               controller: signupController.phoneNumberController,
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
               decoration: InputDecoration(
                 labelText: 'Número Telefónico',
                 border: OutlineInputBorder(
@@ -162,10 +167,10 @@ class SignupPage extends StatelessWidget {
             // Texto para iniciar sesión
             TextButton(
               onPressed: () {
-                Get.toNamed('/login'); // Asegúrate de tener una ruta '/login' o reemplaza con la correcta
+                Get.toNamed('/login'); // Asegúrate de tener una ruta nombrada para iniciar sesión
               },
               child: Text(
-                '¿Ya tienes una cuenta? Iniciar sesión',
+                '¿Ya tienes una cuenta? Inicia Sesión',
                 style: TextStyle(
                   fontFamily: 'Sora',
                   fontSize: 16,

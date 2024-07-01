@@ -49,7 +49,7 @@ class SignupController extends GetxController {
     if (validateInputs()) {
       isLoading.value = true;
       try {
-        var request = http.MultipartRequest('POST', Uri.parse('http://10.0.2.2:3001/api/v1/user/'));
+        var request = http.MultipartRequest('POST', Uri.parse('https://bovisales-backend.onrender.com/api/v1/user/'));
         request.fields['name'] = nameController.text;
         request.fields['email'] = emailController.text;
         request.fields['password'] = passwordController.text;
