@@ -35,7 +35,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final String url = 'http://10.0.2.2:3001/api/v1/user/login'; // Usar la dirección IP local correcta
+    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login';
 
     try {
       var headers = {

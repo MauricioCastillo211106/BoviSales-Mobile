@@ -1,4 +1,3 @@
-// lib/presentation/pages/add_cow_page.dart
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,9 +13,6 @@ class AddCowPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Añadir Vaca'),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -25,54 +21,34 @@ class AddCowPage extends StatelessWidget {
             Text(
               'Añadir Vaca',
               style: TextStyle(
-                fontFamily: 'Sora',
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                fontSize: 32,
               ),
             ),
             SizedBox(height: 10),
             Text(
               'Registra los detalles de tu ganado',
               style: TextStyle(
-                fontFamily: 'Sora',
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             GestureDetector(
-              onTap: () {
-                addCowController.pickImage();
-              },
-              child: Stack(
-                children: [
-                  Obx(() => CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Color(0xFFA55700),
-                    backgroundImage: addCowController.imagePath.value.isEmpty
-                        ? null
-                        : FileImage(File(addCowController.imagePath.value)),
-                    child: addCowController.imagePath.value.isEmpty
-                        ? Icon(Icons.camera_alt, color: Colors.white)
-                        : null,
-                  )),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Icon(
-                      Icons.add_circle,
-                      color: Colors.brown,
-                      size: 24,
-                    ),
-                  ),
-                ],
-              ),
+              onTap: () => addCowController.pickImage(),
+              child: Obx(() => Container(
+                height: 150,
+                width: double.infinity,
+                color: Colors.grey[300],
+                child: addCowController.imagePath.isEmpty
+                    ? Icon(Icons.camera_alt, size: 50)
+                    : Image.file(File(addCowController.imagePath.value)),
+              )),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             TextField(
               controller: addCowController.earringNumberController,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: 'NUM. ARETE',
+                labelText: 'Num. Arete',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -82,77 +58,94 @@ class AddCowPage extends StatelessWidget {
             TextField(
               controller: addCowController.nameController,
               decoration: InputDecoration(
-                labelText: 'NOMBRE',
+                labelText: 'Nombre',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Obx(() => DropdownButtonFormField<String>(
-              value: addCowController.gender.value.isEmpty ? null : addCowController.gender.value,
-              items: ['male', 'famale'].map((String gender) {
-                return DropdownMenuItem<String>(
-                  value: gender,
-                  child: Text(gender),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                addCowController.gender.value = newValue ?? '';
-              },
-              decoration: InputDecoration(
-                labelText: 'GENERO',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            )),
             SizedBox(height: 20),
             TextField(
               controller: addCowController.ageController,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: 'EDAD',
+                labelText: 'Edad',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Obx(() => DropdownButtonFormField<String>(
-              value: addCowController.breed.value.isEmpty ? null : addCowController.breed.value,
-              items: ['Brahman', 'BrownSwiss', 'Holstein', 'Charolais', 'Simmental'].map((String breed) {
-                return DropdownMenuItem<String>(
-                  value: breed,
-                  child: Text(breed),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                addCowController.breed.value = newValue ?? '';
-              },
-              decoration: InputDecoration(
-                labelText: 'SELECCIONE LA RAZA',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            )),
             SizedBox(height: 20),
             TextField(
               controller: addCowController.weightController,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: 'PESO ACTUAL',
+                labelText: 'Peso Actual',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
-            SizedBox(height: 70),
-            Obx(() => ElevatedButton(
-              onPressed: addCowController.imagePath.value.isEmpty
-                  ? null
-                  : () async {
+            SizedBox(height: 20),
+            TextField(
+              controller: addCowController.vaccunateDatesController, // Nuevo campo
+              decoration: InputDecoration(
+                labelText: 'Fechas de Vacunación (separadas por comas)',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: addCowController.pastDiseasesController, // Nuevo campo
+              decoration: InputDecoration(
+                labelText: 'Enfermedades Pasadas (separadas por comas)',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: addCowController.gender.value.isNotEmpty ? addCowController.gender.value : null,
+              onChanged: (String? newValue) {
+                addCowController.gender.value = newValue!;
+              },
+              items: <String>['male', 'famale'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Género',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: addCowController.breed.value.isNotEmpty ? addCowController.breed.value : null,
+              onChanged: (String? newValue) {
+                addCowController.breed.value = newValue!;
+              },
+              items: <String>['Brahman', 'BrownSwiss', 'Holstein', 'Charolais', 'Simmental']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Seleccione la Raza',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
                 await addCowController.addCow();
               },
               style: ElevatedButton.styleFrom(
@@ -163,14 +156,14 @@ class AddCowPage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Agregar Vaca',
+                'Agregar Bovino',
                 style: TextStyle(
                   fontFamily: 'Sora',
                   fontSize: 18,
                   color: Colors.white,
                 ),
               ),
-            )),
+            ),
           ],
         ),
       ),

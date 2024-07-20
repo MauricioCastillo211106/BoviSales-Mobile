@@ -30,4 +30,9 @@ class NavigationController extends GetxController {
         Get.toNamed('/home');
     }
   }
+
+  void navigateTo(int index) {
+    selectedIndex.value = index;
+    onItemTapped(index);
+  }
 }

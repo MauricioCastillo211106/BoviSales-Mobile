@@ -1,5 +1,4 @@
 // lib/main.dart
-import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +8,7 @@ import 'presentation/bindings/signup_binding.dart';
 import 'presentation/bindings/login_binding.dart';
 import 'presentation/bindings/profile_binding.dart';
 import 'presentation/bindings/home_binding.dart';
+import 'presentation/bindings/premium_binding.dart';
 import 'presentation/pages/onboarding_page.dart';
 import 'presentation/pages/signup_page.dart';
 import 'presentation/pages/login_page.dart';
@@ -17,6 +17,8 @@ import 'presentation/pages/home_page.dart';
 import 'presentation/pages/add_cow_page.dart';
 import 'presentation/pages/publicaciones_page.dart';
 import 'presentation/pages/ganado_page.dart';
+import 'presentation/pages/premium_page.dart';
+import 'presentation/pages/bovino_details_page.dart';
 import 'presentation/controllers/navigation_controller.dart';
 
 void main() async {
@@ -75,6 +77,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/bovino_details',
           page: () => BovinoDetailsPage(bovino: Bovino(name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '')),
+        ),
+        GetPage(
+          name: '/premium',
+          page: () => PremiumPage(),
+          binding: PremiumBinding(),
         ),
       ],
       theme: ThemeData(
