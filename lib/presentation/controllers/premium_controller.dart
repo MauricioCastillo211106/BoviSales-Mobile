@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class PremiumController extends GetxController {
   var plans = [].obs;
   var isLoading = true.obs;
+  final storage = GetStorage();
 
   @override
   void onInit() {
@@ -43,48 +45,56 @@ class PremiumController extends GetxController {
   }
 
   Future<void> subscribeToPlan(int planId) async {
-    final storage = GetStorage();
-    final user = storage.read('user') ?? {};
-    final userId = user['id'];
-
-    final String url = 'https://payment-service-wdzc.onrender.com/api/v2/subscriptions/';
-
-    var headers = {
+    final userId = storage.read('user')['id'];
+    final url = 'https://payment-service-wdzc.onrender.com/api/v2/subscriptions/';
+    final headers = {
       'Content-Type': 'application/json',
-      'X-API-Key': 'your_api_key_here' // Reemplaza con tu token real
+      'X-API-Key': 'your_api_key_here',
     };
 
-    var body = jsonEncode({
+    final body = jsonEncode({
       'user_id': userId,
-      'plan_id': planId
+      'plan_id': planId,
     });
 
     try {
-      var response = await http.post(
-        Uri.parse(url),
-        headers: headers,
-        body: body,
-      );
+      final response = await http.post(Uri.parse(url), headers: headers, body: body);
 
-      if (response.statusCode == 200) {
-        var responseData = jsonDecode(response.body);
-        print("Suscripción exitosa: $responseData");
-
-        // Actualiza el estado de suscripción en GetStorage
-        user['suscription'] = 1;
-        storage.write('user', user);
-
-        Get.snackbar('Éxito', responseData['message'],
-            snackPosition: SnackPosition.BOTTOM);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final subscriptionResponse = json.decode(response.body);
+        final subscriptionId = subscriptionResponse['createdSubscription']['subscription_id'];
+        await fetchTransactionApprovalUrl(subscriptionId);
       } else {
-        print("Error al suscribirse: ${response.reasonPhrase}");
-        Get.snackbar('Error', 'No se pudo completar la suscripción',
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar('Error', 'Error al suscribirse al plan: ${response.reasonPhrase}');
       }
     } catch (e) {
-      print("Error en la solicitud de suscripción: $e");
-      Get.snackbar('Error', 'No se pudo conectar con el servidor',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', 'Error en la solicitud de suscripción: $e');
+    }
+  }
+
+  Future<void> fetchTransactionApprovalUrl(int subscriptionId) async {
+    final userId = storage.read('user')['id'];
+    final url = 'https://payment-service-wdzc.onrender.com/api/v3/transactions/$userId';
+    final headers = {
+      'X-API-Key': 'your_api_key_here',
+    };
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        final transactionResponse = json.decode(response.body);
+        final approvalUrl = transactionResponse['approval_url'];
+        if (await canLaunch(approvalUrl)) {
+          await launch(approvalUrl);
+        } else {
+          Get.snackbar('Error', 'No se puede abrir el enlace de aprobación');
+        }
+      } else {
+        Get.snackbar('Error', 'Error al obtener la transacción: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Error en la solicitud de transacción: $e');
     }
   }
 }

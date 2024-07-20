@@ -35,7 +35,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login';
+    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login'; // Usar la dirección IP local correcta
 
     try {
       var headers = {
@@ -74,7 +74,7 @@ class LoginController extends GetxController {
         final NavigationController navigationController = Get.find<NavigationController>();
         navigationController.resetIndex();
 
-        Get.toNamed('/home'); // Navegar a la página de perfil
+        Get.offAllNamed('/home'); // Navegar a la página de inicio
       } else {
         final error = jsonDecode(response.body);
         Get.snackbar('Error', error['message'],

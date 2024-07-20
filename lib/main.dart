@@ -1,4 +1,4 @@
-// lib/main.dart
+import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,7 +18,6 @@ import 'presentation/pages/add_cow_page.dart';
 import 'presentation/pages/publicaciones_page.dart';
 import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/premium_page.dart';
-import 'presentation/pages/bovino_details_page.dart';
 import 'presentation/controllers/navigation_controller.dart';
 
 void main() async {
@@ -31,10 +30,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(NavigationController()); // Inicializa el NavigationController
 
+    final storage = GetStorage();
+    final bool isLoggedIn = storage.read('user') != null;
+
     return GetMaterialApp(
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: isLoggedIn ? '/home' : '/',
       getPages: [
         GetPage(
           name: '/',
@@ -84,6 +86,7 @@ class MyApp extends StatelessWidget {
           binding: PremiumBinding(),
         ),
       ],
+
       theme: ThemeData(
         primarySwatch: Colors.orange,
         fontFamily: 'Sora',

@@ -95,7 +95,7 @@ class ProfilePage extends StatelessWidget {
               title: 'Mi Ganado',
               onTap: () {
                 navigationController.onItemTapped(0); // Actualiza el índice seleccionado
-                Get.toNamed('/venta');
+                Get.toNamed('/home');
               },
             ),
             _buildProfileOption(
