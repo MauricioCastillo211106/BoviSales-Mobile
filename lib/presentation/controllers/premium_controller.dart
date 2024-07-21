@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:bovi_sales/presentation/pages/webview_page.dart'; // Add this line
 
 class PremiumController extends GetxController {
   var plans = [].obs;
   var isLoading = true.obs;
-  final storage = GetStorage();
 
   @override
   void onInit() {
@@ -27,9 +26,7 @@ class PremiumController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseData = json.decode(response.body);
-        if (responseData is List) {
-          plans.value = responseData;
-        } else if (responseData is Map<String, dynamic> && responseData.containsKey('plans')) {
+        if (responseData is Map<String, dynamic> && responseData.containsKey('plans')) {
           plans.value = responseData['plans'];
         } else {
           Get.snackbar('Error', 'Formato de respuesta inesperado.');
@@ -44,15 +41,22 @@ class PremiumController extends GetxController {
     }
   }
 
-  Future<void> subscribeToPlan(int planId) async {
-    final userId = storage.read('user')['id'];
+  void subscribeToPlan(int planId) async {
+    final storage = GetStorage();
+    final user = storage.read('user');
+    final userId = user['id']; // Asegúrate de que el user_id no sea null
+
+    if (userId == null) {
+      Get.snackbar('Error', 'No se encontró el ID de usuario.');
+      return;
+    }
+
     final url = 'https://payment-service-wdzc.onrender.com/api/v2/subscriptions/';
     final headers = {
       'Content-Type': 'application/json',
-      'X-API-Key': 'your_api_key_here',
+      'X-API-Key': 'your_api_key_here', // Reemplaza con tu API key si es necesario
     };
-
-    final body = jsonEncode({
+    final body = json.encode({
       'user_id': userId,
       'plan_id': planId,
     });
@@ -60,41 +64,19 @@ class PremiumController extends GetxController {
     try {
       final response = await http.post(Uri.parse(url), headers: headers, body: body);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final subscriptionResponse = json.decode(response.body);
-        final subscriptionId = subscriptionResponse['createdSubscription']['subscription_id'];
-        await fetchTransactionApprovalUrl(subscriptionId);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['createdSubscription'] != null) {
+          final approvalUrl = data['createdSubscription']['transaction']['approval_url'];
+          Get.to(() => WebViewPage(url: approvalUrl));
+        } else {
+          Get.snackbar('Error', 'Formato de respuesta inesperado.');
+        }
       } else {
-        Get.snackbar('Error', 'Error al suscribirse al plan: ${response.reasonPhrase}');
+        Get.snackbar('Error', 'Error al crear la suscripción: ${response.reasonPhrase}');
       }
     } catch (e) {
       Get.snackbar('Error', 'Error en la solicitud de suscripción: $e');
-    }
-  }
-
-  Future<void> fetchTransactionApprovalUrl(int subscriptionId) async {
-    final userId = storage.read('user')['id'];
-    final url = 'https://payment-service-wdzc.onrender.com/api/v3/transactions/$userId';
-    final headers = {
-      'X-API-Key': 'your_api_key_here',
-    };
-
-    try {
-      final response = await http.get(Uri.parse(url), headers: headers);
-
-      if (response.statusCode == 200) {
-        final transactionResponse = json.decode(response.body);
-        final approvalUrl = transactionResponse['approval_url'];
-        if (await canLaunch(approvalUrl)) {
-          await launch(approvalUrl);
-        } else {
-          Get.snackbar('Error', 'No se puede abrir el enlace de aprobación');
-        }
-      } else {
-        Get.snackbar('Error', 'Error al obtener la transacción: ${response.reasonPhrase}');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Error en la solicitud de transacción: $e');
     }
   }
 }

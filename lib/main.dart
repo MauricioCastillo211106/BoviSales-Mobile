@@ -1,7 +1,7 @@
-import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
 import 'core/models/bovino_model.dart';
 import 'presentation/bindings/onboarding_binding.dart';
 import 'presentation/bindings/signup_binding.dart';
@@ -19,6 +19,7 @@ import 'presentation/pages/publicaciones_page.dart';
 import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/premium_page.dart';
 import 'presentation/controllers/navigation_controller.dart';
+import 'presentation/pages/webview_page.dart';
 
 void main() async {
   await GetStorage.init(); // Inicializa GetStorage
@@ -30,13 +31,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(NavigationController()); // Inicializa el NavigationController
 
-    final storage = GetStorage();
-    final bool isLoggedIn = storage.read('user') != null;
-
     return GetMaterialApp(
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
-      initialRoute: isLoggedIn ? '/home' : '/',
+      initialRoute: '/',
       getPages: [
         GetPage(
           name: '/',
@@ -84,6 +82,10 @@ class MyApp extends StatelessWidget {
           name: '/premium',
           page: () => PremiumPage(),
           binding: PremiumBinding(),
+        ),
+        GetPage(
+          name: '/webview',
+          page: () => WebViewPage(url: 'https://flutter.dev'),// URL se pasará a través de Get.to()
         ),
       ],
 
