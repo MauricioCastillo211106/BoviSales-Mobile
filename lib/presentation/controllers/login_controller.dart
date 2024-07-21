@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import '../controllers/navigation_controller.dart';
 import 'dart:convert';
-import '../controllers/navigation_controller.dart'; // Asegúrate de importar el controlador de navegación
 
 class LoginController extends GetxController {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var isPasswordHidden = true.obs;
   var emailError = ''.obs;
+  final storage = GetStorage();
 
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
@@ -35,7 +36,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login'; // Usar la dirección IP local correcta
+    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login';
 
     try {
       var headers = {
@@ -58,9 +59,8 @@ class LoginController extends GetxController {
         print("Login exitoso: $data");
 
         // Guardar datos en GetStorage
-        final storage = GetStorage();
         storage.write('user', {
-          'id': data['id'], // Asegúrate de guardar el ID correctamente
+          'id': data['id'],
           'token': data['token'],
           'name': data['name'],
           'email': data['email'],

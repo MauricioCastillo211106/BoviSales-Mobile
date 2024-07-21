@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:bovi_sales/presentation/pages/bovino_details_page.dart';
+import 'presentation/pages/bovino_details_page.dart';
 import 'core/models/bovino_model.dart';
 import 'presentation/bindings/onboarding_binding.dart';
 import 'presentation/bindings/signup_binding.dart';
@@ -22,11 +22,14 @@ import 'presentation/controllers/navigation_controller.dart';
 import 'presentation/pages/webview_page.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Inicializa GetStorage
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final GetStorage storage = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     Get.put(NavigationController()); // Inicializa el NavigationController
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: storage.read('user') != null ? '/home' : '/',
       getPages: [
         GetPage(
           name: '/',
@@ -56,7 +59,6 @@ class MyApp extends StatelessWidget {
           page: () => ProfilePage(),
           binding: ProfileBinding(),
         ),
-        // Agrega las rutas principales
         GetPage(
           name: '/home',
           page: () => HomePage(),
@@ -85,10 +87,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/webview',
-          page: () => WebViewPage(url: 'https://flutter.dev'),// URL se pasará a través de Get.to()
+          page: () => WebViewPage(url: 'https://flutter.dev'), // URL se pasará a través de Get.to()
         ),
       ],
-
       theme: ThemeData(
         primarySwatch: Colors.orange,
         fontFamily: 'Sora',
