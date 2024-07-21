@@ -1,89 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/premium_controller.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:bovi_sales/presentation/controllers/premium_controller.dart';
 
 class PremiumPage extends StatelessWidget {
-  final PremiumController premiumController = Get.put(PremiumController());
-
   @override
   Widget build(BuildContext context) {
+    final premiumController = Get.find<PremiumController>();
+    final user = GetStorage().read('user');
+    final userId = user['id'];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('BoviSales Premium'),
-        centerTitle: true,
+        title: Text(
+          'BoviSales Premium',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: Obx(() {
         if (premiumController.isLoading.value) {
           return Center(child: CircularProgressIndicator());
-        } else if (premiumController.plans.isEmpty) {
+        }
+
+        if (premiumController.errorMessage.isNotEmpty) {
+          return Center(child: Text(premiumController.errorMessage.value));
+        }
+
+        if (premiumController.plans.isEmpty) {
           return Center(child: Text('No se encontraron planes.'));
-        } else {
-          return ListView(
-            padding: const EdgeInsets.all(20.0),
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.diamond, color: Color(0xFFA55700), size: 100), // Icono de diamante
-                  SizedBox(height: 20),
-                  Text(
-                    '¿Qué incluye Premium?',
+        }
+
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.diamond,
+                        size: 60,
+                        color: Color(0xFFB27046),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        '¿Qué incluye Premium?',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 3,
+                  child: ListTile(
+                    leading: Icon(Icons.bar_chart, color: Color(0xFFB27046)),
+                    title: Text('Apartado de Ventas'),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Card(
+                  elevation: 3,
+                  child: ListTile(
+                    leading: Icon(Icons.assignment, color: Color(0xFFB27046)),
+                    title: Text('Cupo ilimitado de Gando'),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: Text(
+                    'Planes',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            leading: Icon(Icons.store, color: Color(0xFFA55700)),
-                            title: Text('Apartado de Ventas'),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.all_inclusive, color: Color(0xFFA55700)),
-                            title: Text('Cupo ilimitado de Ganado'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Planes',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                ],
-              ),
-              for (var plan in premiumController.plans)
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  child: ListTile(
-                    title: Text(plan['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Precio: \$${plan['price']}'),
-                        Text('Duración: ${plan['duration']} mes(es)'),
-                        Text('Descripción: ${plan['description']}'),
-                      ],
-                    ),
-                    onTap: () {
-                      premiumController.subscribeToPlan(plan['plan_id']);
-                    },
-                  ),
                 ),
-            ],
-          );
-        }
+                SizedBox(height: 10),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: premiumController.plans.length,
+                  itemBuilder: (context, index) {
+                    final plan = premiumController.plans[index];
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      child: ListTile(
+                        title: Center(
+                          child: Text(
+                            '${plan['duration']} Meses',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          premiumController.subscribeToPlan(userId, plan['plan_id']);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
       }),
     );
   }

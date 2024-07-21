@@ -1,82 +1,52 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:get_storage/get_storage.dart';
-import 'package:bovi_sales/presentation/pages/webview_page.dart'; // Add this line
+import '../../data/repositories/subscription_repository.dart';
+import '../pages/webview_page.dart';
 
 class PremiumController extends GetxController {
+  final SubscriptionRepository repository;
+  var isLoading = false.obs;
+  var errorMessage = ''.obs;
   var plans = [].obs;
-  var isLoading = true.obs;
+
+  PremiumController(this.repository);
 
   @override
   void onInit() {
-    fetchPlans();
     super.onInit();
+    fetchPlans();
   }
 
-  void fetchPlans() async {
-    final url = 'https://payment-service-wdzc.onrender.com/api/v1/subscriptions_plans/';
-    final headers = {
-      'X-API-Key': 'your_api_key_here', // Reemplaza con tu API key si es necesario
-    };
-
+  Future<void> fetchPlans() async {
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
-
-      if (response.statusCode == 200) {
-        var responseData = json.decode(response.body);
-        if (responseData is Map<String, dynamic> && responseData.containsKey('plans')) {
-          plans.value = responseData['plans'];
-        } else {
-          Get.snackbar('Error', 'Formato de respuesta inesperado.');
-        }
-      } else {
-        Get.snackbar('Error', 'Error al obtener los planes: ${response.reasonPhrase}');
-      }
+      isLoading.value = true;
+      final responseData = await repository.getPlans('your_api_key_here');
+      plans.assignAll(responseData['plans']);
     } catch (e) {
-      Get.snackbar('Error', 'Error en la solicitud: $e');
+      errorMessage.value = 'Failed to load plans';
     } finally {
       isLoading.value = false;
     }
   }
 
-  void subscribeToPlan(int planId) async {
-    final storage = GetStorage();
-    final user = storage.read('user');
-    final userId = user['id']; // Asegúrate de que el user_id no sea null
-
-    if (userId == null) {
-      Get.snackbar('Error', 'No se encontró el ID de usuario.');
-      return;
-    }
-
-    final url = 'https://payment-service-wdzc.onrender.com/api/v2/subscriptions/';
-    final headers = {
-      'Content-Type': 'application/json',
-      'X-API-Key': 'your_api_key_here', // Reemplaza con tu API key si es necesario
-    };
-    final body = json.encode({
-      'user_id': userId,
-      'plan_id': planId,
-    });
-
+  Future<void> subscribeToPlan(int userId, int planId) async {
     try {
-      final response = await http.post(Uri.parse(url), headers: headers, body: body);
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['createdSubscription'] != null) {
-          final approvalUrl = data['createdSubscription']['transaction']['approval_url'];
+      isLoading.value = true;
+      final responseData = await repository.subscribeToPlan(userId, planId, 'your_api_key_here');
+      if (responseData['createdSubscription'] != null) {
+        final approvalUrl = responseData['createdSubscription']['transaction']['approval_url'];
+        print(approvalUrl);
+        if (approvalUrl != null) {
           Get.to(() => WebViewPage(url: approvalUrl));
         } else {
-          Get.snackbar('Error', 'Formato de respuesta inesperado.');
+          Get.snackbar('Error', 'Failed to get approval URL.');
         }
       } else {
-        Get.snackbar('Error', 'Error al crear la suscripción: ${response.reasonPhrase}');
+        Get.snackbar('Error', 'Failed to subscribe to plan.');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Error en la solicitud de suscripción: $e');
+      Get.snackbar('Error', 'Failed to subscribe to plan: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

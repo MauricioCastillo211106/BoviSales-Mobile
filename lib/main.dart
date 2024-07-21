@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'presentation/bindings/navigation_binding.dart';
 import 'presentation/pages/bovino_details_page.dart';
 import 'core/models/bovino_model.dart';
 import 'presentation/bindings/onboarding_binding.dart';
@@ -18,11 +19,9 @@ import 'presentation/pages/add_cow_page.dart';
 import 'presentation/pages/publicaciones_page.dart';
 import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/premium_page.dart';
-import 'presentation/controllers/navigation_controller.dart';
 import 'presentation/pages/webview_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Inicializa GetStorage
   runApp(MyApp());
 }
@@ -32,11 +31,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(NavigationController()); // Inicializa el NavigationController
-
     return GetMaterialApp(
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
+      initialBinding: NavigationBinding(), // Asegúrate de inicializar InitialBinding aquí
       initialRoute: storage.read('user') != null ? '/home' : '/',
       getPages: [
         GetPage(
@@ -87,7 +85,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/webview',
-          page: () => WebViewPage(url: 'https://flutter.dev'), // URL se pasará a través de Get.to()
+          page: () => WebViewPage(url: '',),
         ),
       ],
       theme: ThemeData(
