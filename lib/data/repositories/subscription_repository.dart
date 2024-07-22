@@ -9,15 +9,16 @@ class SubscriptionRepository {
     return await remoteDataSource.fetchTransactions(userId);
   }
 
-  Future<Map<String, dynamic>> getPlans(String apiKey) async {
-    return await remoteDataSource.fetchPlans(apiKey);
+  Future<Map<String, dynamic>> getPlans(String token) async {
+    return await remoteDataSource.fetchPlans(token);
   }
 
-  Future<Map<String, dynamic>> subscribeToPlan(int userId, int planId, String apiKey) async {
-    return await remoteDataSource.createSubscription(userId, planId, apiKey);
+  Future<Map<String, dynamic>> subscribeToPlan(int userId, int planId, String s) async {
+    return await remoteDataSource.subscribeToPlan(userId, planId);
   }
 
   Future<Map<String, dynamic>?> getSubscriptionStatus(int userId, String token) async {
     return await remoteDataSource.fetchSubscription(userId, token);
   }
+
 }

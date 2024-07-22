@@ -85,26 +85,6 @@ class AddCowPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: addCowController.vaccunateDatesController, // Nuevo campo
-              decoration: InputDecoration(
-                labelText: 'Fechas de Vacunación (separadas por comas)',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: addCowController.pastDiseasesController, // Nuevo campo
-              decoration: InputDecoration(
-                labelText: 'Enfermedades Pasadas (separadas por comas)',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: addCowController.gender.value.isNotEmpty ? addCowController.gender.value : null,
               onChanged: (String? newValue) {

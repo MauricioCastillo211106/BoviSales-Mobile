@@ -15,12 +15,9 @@ class SubscriptionRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> fetchPlans(String apiKey) async {
-    final headers = {'X-API-Key': apiKey};
-    final response = await client.get(
-      Uri.parse('https://payment-service-wdzc.onrender.com/api/v1/subscriptions_plans/'),
-      headers: headers,
-    );
+  Future<Map<String, dynamic>> fetchPlans(String token) async {
+    final headers = {'X-API-Key': token};
+    final response = await client.get(Uri.parse('https://payment-service-wdzc.onrender.com/api/v1/subscriptions_plans/'), headers: headers);
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -28,19 +25,15 @@ class SubscriptionRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> createSubscription(int userId, int planId, String apiKey) async {
+  Future<Map<String, dynamic>> subscribeToPlan(int userId, int planId) async {
     final headers = {
       'Content-Type': 'application/json',
-      'X-API-Key': apiKey,
+      'X-API-Key': 'your_api_key_here'
     };
-    final body = json.encode({
-      "user_id": userId,
-      "plan_id": planId
-    });
     final response = await client.post(
       Uri.parse('https://payment-service-wdzc.onrender.com/api/v2/subscriptions/'),
+      body: json.encode({'user_id': userId, 'plan_id': planId}),
       headers: headers,
-      body: body,
     );
     if (response.statusCode == 200) {
       return json.decode(response.body);
@@ -50,9 +43,10 @@ class SubscriptionRemoteDataSource {
   }
 
   Future<Map<String, dynamic>?> fetchSubscription(int userId, String token) async {
+    final headers = {'X-API-Key': token};
     final response = await client.get(
       Uri.parse('https://payment-service-wdzc.onrender.com/api/v2/subscriptions/$userId'),
-      headers: {'X-API-Key': token},
+      headers: headers,
     );
     if (response.statusCode == 200) {
       return json.decode(response.body);
@@ -60,4 +54,6 @@ class SubscriptionRemoteDataSource {
       return null;
     }
   }
+
+
 }
