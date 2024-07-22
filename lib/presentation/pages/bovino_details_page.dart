@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:bovi_sales/core/models/bovino_model.dart';
 import '../controllers/navigation_controller.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
+import 'crear_publicacion_page.dart'; // Importa la página para crear la publicación
 
 class BovinoDetailsPage extends StatelessWidget {
   final Bovino bovino;
@@ -92,25 +93,50 @@ class BovinoDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed('/edit_bovino', arguments: bovino); // Navega a la página de edición
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFC67C4E),
-                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                child: Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed('/edit_bovino', arguments: bovino); // Navega a la página de edición
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFC67C4E),
+                        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Editar datos',
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    'Editar datos',
-                    style: TextStyle(
-                      fontFamily: 'Sora',
-                      fontSize: 18,
-                      color: Colors.white,
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => CrearPublicacionPage(bovino: bovino)); // Navega a la página para crear la publicación
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFC67C4E),
+                        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Crear Publicación',
+                        style: TextStyle(
+                          fontFamily: 'Sora',
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],

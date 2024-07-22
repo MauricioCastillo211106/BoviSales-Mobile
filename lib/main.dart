@@ -1,5 +1,4 @@
-import 'package:bovi_sales/presentation/bindings/edit_bovino_binding.dart'; // Importa la nueva binding
-import 'package:bovi_sales/presentation/bindings/publicaciones_binding.dart';
+// lib/main.dart
 import 'package:bovi_sales/presentation/controllers/publicaciones_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +22,7 @@ import 'presentation/pages/publicaciones_page.dart';
 import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/premium_page.dart';
 import 'presentation/pages/webview_page.dart';
-import 'presentation/pages/edit_bovino_page.dart'; // Importa la nueva página
+import 'presentation/pages/crear_publicacion_page.dart'; // Importa la página de creación de publicación
 
 void main() async {
   await GetStorage.init(); // Inicializa GetStorage
@@ -83,12 +82,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/bovino_details',
-          page: () => BovinoDetailsPage(bovino: Bovino(name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', id: '')),
-        ),
-        GetPage(
-          name: '/edit_bovino',
-          page: () => EditBovinoPage(),
-          binding: EditBovinoBinding(),
+          page: () => BovinoDetailsPage(bovino: Bovino(
+              id: '', name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', imageUrl: ''
+          )),
         ),
         GetPage(
           name: '/premium',
@@ -98,6 +94,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/webview',
           page: () => WebViewPage(url: '',),
+        ),
+        GetPage(
+          name: '/crear_publicacion',
+          page: () => CrearPublicacionPage(bovino: Bovino(
+              id: '', name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', imageUrl: ''
+          )),
         ),
       ],
       theme: ThemeData(
