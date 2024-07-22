@@ -8,7 +8,7 @@ import '../widgets/custom_bottom_navigation_bar.dart';
 class BovinoDetailsPage extends StatelessWidget {
   final Bovino bovino;
 
-  BovinoDetailsPage({required this.bovino});
+  const BovinoDetailsPage({Key? key, required this.bovino}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +19,20 @@ class BovinoDetailsPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Get.back();
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit, color: Colors.black),
+            icon: const Icon(Icons.edit, color: Colors.black),
             onPressed: () {
-              // Implementa la lógica de edición aquí
+              Get.toNamed('/edit_bovino', arguments: bovino); // Navega a la página de edición
             },
           ),
         ],
-        title: Text(
+        title: const Text(
           'Detalles',
           style: TextStyle(color: Colors.black),
         ),
@@ -46,17 +46,19 @@ class BovinoDetailsPage extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: AspectRatio(
-                  aspectRatio: 16/9,
-                  child: Image.network(
-                    bovino.imageUrl ?? '',
+                  aspectRatio: 16 / 9,
+                  child: bovino.imageUrl != null && bovino.imageUrl!.isNotEmpty
+                      ? Image.network(
+                    bovino.imageUrl!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.error);
+                      return const Icon(Icons.error);
                     },
-                  ),
+                  )
+                      : const Icon(Icons.image_not_supported, size: 100),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -66,7 +68,7 @@ class BovinoDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -75,33 +77,33 @@ class BovinoDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     buildDetailRow('Nombre:', bovino.name),
-                    SizedBox(height: 8), // Add space between rows
+                    const SizedBox(height: 8), // Add space between rows
                     buildDetailRow('Edad:', bovino.age.toString()),
-                    SizedBox(height: 8), // Add space between rows
+                    const SizedBox(height: 8), // Add space between rows
                     buildDetailRow('Género:', bovino.gender),
-                    SizedBox(height: 8), // Add space between rows
+                    const SizedBox(height: 8), // Add space between rows
                     buildDetailRow('Raza:', bovino.breed),
-                    SizedBox(height: 8), // Add space between rows
+                    const SizedBox(height: 8), // Add space between rows
                     buildDetailRow('Peso:', '${bovino.weight}kg'),
-                    SizedBox(height: 8), // Add space between rows
+                    const SizedBox(height: 8), // Add space between rows
                     buildDetailRow('Arete:', bovino.earringNumber.toString()),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implementa la lógica de edición aquí
+                    Get.toNamed('/edit_bovino', arguments: bovino); // Navega a la página de edición
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFC67C4E),
-                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                    backgroundColor: const Color(0xFFC67C4E),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Editar datos',
                     style: TextStyle(
                       fontFamily: 'Sora',
@@ -132,7 +134,7 @@ class BovinoDetailsPage extends StatelessWidget {
         children: [
           Text(
             '$label ',
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
               color: Colors.black,

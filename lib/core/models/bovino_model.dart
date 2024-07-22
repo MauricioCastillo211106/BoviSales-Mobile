@@ -1,13 +1,16 @@
+// lib/core/models/bovino_model.dart
 class Bovino {
-  final String name;
-  final String breed;
-  final int earringNumber;
-  final int age;
-  final String gender;
-  final String weight;
-  final String? imageUrl;
+  String id;
+  String name;
+  String breed;
+  int earringNumber;
+  int age;
+  String gender;
+  String weight;
+  String? imageUrl;
 
   Bovino({
+    required this.id,
     required this.name,
     required this.breed,
     required this.earringNumber,
@@ -19,13 +22,27 @@ class Bovino {
 
   factory Bovino.fromJson(Map<String, dynamic> json) {
     return Bovino(
+      id: json['id'].toString(), // Asegúrate de convertir a String si es necesario
       name: json['name'],
       breed: json['breed'],
-      earringNumber: json['earringNumber'],
-      age: json['age'],
+      earringNumber: json['earringNumber'] is String ? int.parse(json['earringNumber']) : json['earringNumber'],
+      age: json['age'] is String ? int.parse(json['age']) : json['age'],
       gender: json['gender'],
-      weight: json['weight'],
+      weight: json['weight'].toString(), // Asegúrate de convertir a String si es necesario
       imageUrl: json['image'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'breed': breed,
+      'earringNumber': earringNumber,
+      'age': age,
+      'gender': gender,
+      'weight': weight,
+      'imageUrl': imageUrl,
+    };
   }
 }
