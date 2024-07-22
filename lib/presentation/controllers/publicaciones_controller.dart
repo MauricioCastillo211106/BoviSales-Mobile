@@ -3,38 +3,30 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../core/models/bovino_model.dart';
-import 'package:get_storage/get_storage.dart';
 
 class PublicacionesController extends GetxController {
-  var bovinos = <Bovino>[].obs;
-  final user = GetStorage().read('user') ?? {};
+  var publicaciones = <Bovino>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchBovinos();
+    fetchPublicaciones();
   }
 
-  Future<void> fetchBovinos() async {
+  Future<void> fetchPublicaciones() async {
+    final url = Uri.parse('https://bovisales-backend.onrender.com/api/posts/user/21');
+
     try {
-      final userId = user['id'];
-      if (userId == null) {
-        throw Exception('User ID is null');
-      }
-      final response = await http.get(Uri.parse('https://bovisales-backend.onrender.com/api/v1/user/cattle/$userId'));
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(response.body)['data']; // Asegúrate de acceder a la clave correcta
-        bovinos.value = data.map((json) => Bovino.fromJson(json)).toList();
+        List<dynamic> data = jsonDecode(response.body);
+        publicaciones.value = data.map((json) => Bovino.fromJson(json)).toList();
       } else {
-        print('Failed to load bovinos: ${response.statusCode}');
+        print('Error al obtener publicaciones: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (e) {
-      print('Error fetching bovinos: $e');
+      print('Error realizando la solicitud: $e');
     }
-  }
-
-  void refreshBovinos() {
-    fetchBovinos();
   }
 }

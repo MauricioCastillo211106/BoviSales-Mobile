@@ -1,5 +1,6 @@
 import 'package:bovi_sales/presentation/bindings/edit_bovino_binding.dart'; // Importa la nueva binding
 import 'package:bovi_sales/presentation/bindings/publicaciones_binding.dart';
+import 'package:bovi_sales/presentation/controllers/publicaciones_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -68,7 +69,9 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/publicaciones',
           page: () => PublicacionesPage(),
-          binding: PublicacionesBinding(),
+          binding: BindingsBuilder(() {
+            Get.lazyPut(() => PublicacionesController());
+          }),
         ),
         GetPage(
           name: '/venta',

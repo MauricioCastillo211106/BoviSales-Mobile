@@ -18,7 +18,10 @@ class InitialBinding extends Bindings {
     final subscriptionRepository = SubscriptionRepository(subscriptionRemoteDataSource);
 
     Get.put(subscriptionRepository);
-    Get.put(NavigationController(repository: subscriptionRepository, apiKey: 'your_api_key_here'));
+    Get.lazyPut<NavigationController>(() => NavigationController(
+      repository: Get.find(), // Asegúrate de que esto esté bien configurado
+      apiKey: 'your_api_key_here',
+    ));
     Get.put(SubscriptionController(subscriptionRepository));
 
     Get.lazyPut<HomeController>(() => HomeController());
