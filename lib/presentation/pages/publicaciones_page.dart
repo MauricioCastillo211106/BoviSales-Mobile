@@ -6,8 +6,9 @@ import '../controllers/navigation_controller.dart';
 import '../controllers/custom_search_controller.dart' as custom;
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/search_bar.dart' as custom_search;
-import '../widgets/bovino_card.dart'; // Asegúrate de importar BovinoCard
-import 'bovino_details_page.dart'; // Importa la página de detalles
+import '../widgets/publicacion_card.dart'; // Importa PublicacionCard
+import '../../core/models/publicacion_model.dart';
+import '../../core/models/bovino_model.dart';
 
 class PublicacionesPage extends StatelessWidget {
   final PublicacionesController publicacionesController = Get.put(PublicacionesController());
@@ -75,12 +76,37 @@ class PublicacionesPage extends StatelessWidget {
                   ),
                   itemCount: publicacionesController.publicaciones.length,
                   itemBuilder: (context, index) {
-                    final bovino = publicacionesController.publicaciones[index];
+                    final publicacion = publicacionesController.publicaciones[index];
+                    final bovino = publicacionesController.bovinos.firstWhere(
+                          (bovino) => bovino.id == publicacion.idCattle.toString(), // Convertir idCattle a String
+                      orElse: () => Bovino(
+                        id: publicacion.idCattle.toString(), // Convertir idCattle a String
+                        name: publicacion.description,
+                        breed: "Raza no disponible",
+                        earringNumber: publicacion.idCattle,
+                        age: 0,
+                        gender: "Género no disponible",
+                        weight: "Peso no disponible",
+                        imageUrl: '', // Aquí debería ir una URL de imagen por defecto
+                      ),
+                    );
+
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => BovinoDetailsPage(bovino: bovino));
+                        // Navegar a los detalles de la publicación
+                        // Implementa la lógica si es necesario
                       },
-                      child: BovinoCard(bovino: bovino),
+                      child: PublicacionCard(publicacion: {
+                        'name': bovino.name,
+                        'breed': bovino.breed,
+                        'earringNumber': bovino.earringNumber,
+                        'description': publicacion.description,
+                        'precio': publicacion.precio,
+                        'ubicacion': publicacion.ubicacion,
+                        'fecha': publicacion.fecha,
+                        'status': publicacion.status,
+                        'imageUrl': bovino.imageUrl // Usa la URL de la imagen del bovino
+                      }),
                     );
                   },
                 );

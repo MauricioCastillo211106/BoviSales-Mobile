@@ -1,4 +1,5 @@
 // lib/main.dart
+import 'package:bovi_sales/presentation/bindings/crear_publicacion_binding.dart';
 import 'package:bovi_sales/presentation/controllers/publicaciones_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
           page: () => CrearPublicacionPage(bovino: Bovino(
               id: '', name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', imageUrl: ''
           )),
+          binding: CrearPublicacionBinding(),
         ),
       ],
       theme: ThemeData(
