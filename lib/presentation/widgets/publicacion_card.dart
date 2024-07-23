@@ -1,17 +1,21 @@
 // lib/presentation/widgets/publicacion_card.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/models/publicacion_model.dart';
+import '../../core/models/bovino_model.dart';
+import '../pages/edit_publicacion_page.dart';
 
 class PublicacionCard extends StatelessWidget {
   final Map<String, dynamic> publicacion;
+  final Bovino bovino;
 
-  const PublicacionCard({required this.publicacion});
+  const PublicacionCard({required this.publicacion, required this.bovino, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Acción al tocar la tarjeta (puedes implementar la navegación o cualquier otra lógica aquí)
+        Get.to(() => EditPublicacionPage(publicacion: Publicacion.fromJson(publicacion), bovino: bovino));
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -65,7 +69,7 @@ class PublicacionCard extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.edit, color: Color(0xFFC67C4E)), // Icono de lápiz
                         onPressed: () {
-                          // Acción de modificación aquí
+                          Get.to(() => EditPublicacionPage(publicacion: Publicacion.fromJson(publicacion), bovino: bovino));
                         },
                       ),
                     ],

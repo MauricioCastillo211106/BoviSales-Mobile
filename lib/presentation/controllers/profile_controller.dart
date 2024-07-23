@@ -26,7 +26,7 @@ class ProfileController extends GetxController {
   }
 
   void fetchTransactionStatus(int userId) async {
-    final url = 'https://payment-service-wdzc.onrender.com/api/v3/transactions/$userId';
+    final url = 'https://app.cristilex.com/api/v3/transactions/$userId';
     final headers = {
       'X-API-Key': 'your_api_key_here',
     };

@@ -128,7 +128,7 @@ class BovinoDetailsPage extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Crear Publicación',
+                        'Publicar Bovino',
                         style: TextStyle(
                           fontFamily: 'Sora',
                           fontSize: 18,

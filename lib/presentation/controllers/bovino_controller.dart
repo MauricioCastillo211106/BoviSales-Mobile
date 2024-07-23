@@ -35,7 +35,7 @@ class EditBovinoController extends GetxController {
       "image": bovino.value.imageUrl,
     });
 
-    final url = Uri.parse('https://bovisales-backend.onrender.com/api/v1/Cattle/put/${bovino.value.id}');
+    final url = Uri.parse('https://app.cristilex.com/api/v1/Cattle/put/${bovino.value.id}');
 
     try {
       final response = await http.put(url, headers: headers, body: body);

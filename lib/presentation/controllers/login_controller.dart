@@ -73,11 +73,10 @@ class LoginController extends GetxController {
         // Restablecer el índice del controlador de navegación
         final NavigationController navigationController = Get.find<NavigationController>();
         navigationController.resetIndex();
-
         Get.offAllNamed('/home'); // Navegar a la página de inicio
       } else {
         final error = jsonDecode(response.body);
-        Get.snackbar('Error', error['message'],
+        Get.snackbar('Error', error['message'] ?? 'Error desconocido',
             snackPosition: SnackPosition.BOTTOM);
         print("Error al iniciar sesión: ${response.statusCode}");
         print("Response body: ${response.body}");

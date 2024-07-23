@@ -98,7 +98,7 @@ class CrearPublicacionController extends GetxController {
       "status": "disponible"
     });
 
-    var request = http.Request('POST', Uri.parse('https://bovisales-backend.onrender.com/api/posts/'));
+    var request = http.Request('POST', Uri.parse('https://app.cristilex.com/api/posts/'));
     request.body = body;
     request.headers.addAll(headers);
 

@@ -8,9 +8,11 @@ class NavigationController extends GetxController {
   final SubscriptionRepository repository;
   final String apiKey;
   var selectedIndex = 0.obs;
-  final subscriptionController = Get.find<SubscriptionController>();
+  late final SubscriptionController subscriptionController;
 
-  NavigationController({required this.repository, required this.apiKey});
+  NavigationController({required this.repository, required this.apiKey}) {
+    subscriptionController = Get.find<SubscriptionController>();
+  }
 
   void resetIndex() {
     selectedIndex.value = 0;

@@ -29,7 +29,7 @@ class AddCowController extends GetxController {
     final storage = GetStorage();
     final userId = storage.read('user')['id'];
     final url = Uri.parse(
-        'https://bovisales-backend.onrender.com/api/v1/Cattle/');
+        'https://app.cristilex.com/api/v1/Cattle/');
 
     var request = http.MultipartRequest('POST', url);
     request.fields.addAll({

@@ -31,7 +31,7 @@ class PublicacionesController extends GetxController {
         ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       IOClient ioClient = IOClient(httpClient);
 
-      final response = await ioClient.get(Uri.parse('https://bovisales-backend.onrender.com/api/posts/user/$userId'));
+      final response = await ioClient.get(Uri.parse('https://app.cristilex.com/api/posts/user/$userId'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -57,7 +57,7 @@ class PublicacionesController extends GetxController {
 
   Future<void> fetchBovinoDetails(int idCattle) async {
     try {
-      final response = await http.get(Uri.parse('https://bovisales-backend.onrender.com/api/v1/cattle/$idCattle'));
+      final response = await http.get(Uri.parse('https://app.cristilex.com/api/v1/cattle/$idCattle'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body)['data'];

@@ -20,7 +20,7 @@ class HomeController extends GetxController {
       if (userId == null) {
         throw Exception('User ID is null');
       }
-      final response = await http.get(Uri.parse('https://bovisales-backend.onrender.com/api/v1/user/cattle/$userId'));
+      final response = await http.get(Uri.parse('https://app.cristilex.com/api/v1/user/cattle/$userId'));
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body)['data']; // Asegúrate de acceder a la clave correcta

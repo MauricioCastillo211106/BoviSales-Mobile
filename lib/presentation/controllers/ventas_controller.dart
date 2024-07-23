@@ -37,7 +37,7 @@ class VentasController extends GetxController {
   }
 
   Future<void> fetchBovinos() async {
-    final url = Uri.parse('https://bovisales-backend.onrender.com/api/v1/Cattle/getAll');
+    final url = Uri.parse('https://app.cristilex.com/api/v1/Cattle/getAll');
 
     try {
       final response = await http.get(url);

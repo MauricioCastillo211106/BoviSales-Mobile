@@ -48,7 +48,21 @@ class CrearPublicacionPage extends StatelessWidget {
                   Get.snackbar('Error', 'No se puede crear la publicación sin la ubicación');
                 }
               },
-              child: Text('Crear Publicación'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFC67C4E),
+                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                'Publicar Bovino',
+                style: TextStyle(
+                  fontFamily: 'Sora',
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),

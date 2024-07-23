@@ -1,9 +1,16 @@
 // lib/main.dart
+import 'package:bovi_sales/presentation/bindings/edit_publicacion_binding.dart';
 import 'package:bovi_sales/presentation/bindings/publicaciones_binding.dart';
 import 'package:bovi_sales/presentation/bindings/ventas_binding.dart';
+import 'package:bovi_sales/presentation/controllers/navigation_controller.dart';
+import 'package:bovi_sales/presentation/controllers/subscription_controller.dart';
+import 'package:bovi_sales/presentation/pages/edit_publicacion_page.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'data/datasources/subscription_remote_data_source.dart';
+import 'data/repositories/subscription_repository.dart';
 import 'presentation/bindings/navigation_binding.dart';
 import 'presentation/pages/bovino_details_page.dart';
 import 'core/models/bovino_model.dart';
@@ -27,7 +34,20 @@ import 'presentation/pages/ventas_page.dart';
 import 'presentation/bindings/edit_bovino_binding.dart';
 
 void main() async {
-  await GetStorage.init(); // Inicializa GetStorage
+  await GetStorage.init();// Crear una instancia de http.Client
+  final httpClient = http.Client();
+
+  // Crear una instancia del SubscriptionRemoteDataSource con el http.Client
+  final subscriptionRemoteDataSource = SubscriptionRemoteDataSource(httpClient);
+
+  final subscriptionRepository = SubscriptionRepository(subscriptionRemoteDataSource);
+
+  final apiKey = 'YOUR_API_KEY';
+
+
+  Get.put(SubscriptionController(subscriptionRepository));
+  Get.put(NavigationController(repository: subscriptionRepository, apiKey: apiKey));
+
   runApp(MyApp());
 }
 
@@ -77,6 +97,7 @@ class MyApp extends StatelessWidget {
           page: () => VentaPage(),
           binding: VentasBinding(),
         ),
+        GetPage(name: '/edit_publicacion', page: () => EditPublicacionPage(publicacion: Get.arguments['publicacion'], bovino: Get.arguments['bovino']), binding: EditPublicacionBinding()),
         GetPage(
           name: '/add_cow',
           page: () => AddCowPage(),

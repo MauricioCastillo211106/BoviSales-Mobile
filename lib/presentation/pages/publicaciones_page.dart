@@ -26,19 +26,20 @@ class PublicacionesPage extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
+                  title: Text('Cuenta', style: TextStyle(color: Colors.white)),
                   automaticallyImplyLeading: false,
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  title: custom_search.SearchBar(
-                    controller: searchController.searchController.value,
-                    onSearch: (query) {
-                      // Implementa la lógica de búsqueda aquí
-                    },
-                    onFilter: () {
-                      // Implementa la lógica de filtrado aquí
-                    },
-                  ),
+                ),
+                custom_search.SearchBar(
+                  controller: searchController.searchController.value,
+                  onSearch: (query) {
+                    // Implementa la lógica de búsqueda aquí
+                  },
+                  onFilter: () {
+                    // Implementa la lógica de filtrado aquí
+                  },
                 ),
               ],
             ),
@@ -91,23 +92,18 @@ class PublicacionesPage extends StatelessWidget {
                       ),
                     );
 
-                    return GestureDetector(
-                      onTap: () {
-                        // Navegar a los detalles de la publicación
-                        // Implementa la lógica si es necesario
-                      },
-                      child: PublicacionCard(publicacion: {
-                        'name': bovino.name,
-                        'breed': bovino.breed,
-                        'earringNumber': bovino.earringNumber,
-                        'description': publicacion.description,
-                        'precio': publicacion.precio,
-                        'ubicacion': publicacion.ubicacion,
-                        'fecha': publicacion.fecha,
-                        'status': publicacion.status,
-                        'imageUrl': bovino.imageUrl // Usa la URL de la imagen del bovino
-                      }),
-                    );
+                    return PublicacionCard(publicacion: {
+                      'idCattle': publicacion.idCattle,
+                      'description': publicacion.description,
+                      'precio': publicacion.precio,
+                      'ubicacion': publicacion.ubicacion,
+                      'fecha': publicacion.fecha,
+                      'status': publicacion.status,
+                      'name': bovino.name,
+                      'breed': bovino.breed,
+                      'earringNumber': bovino.earringNumber,
+                      'imageUrl': bovino.imageUrl, // Usa la URL de la imagen del bovino
+                    }, bovino: bovino);
                   },
                 );
               }
