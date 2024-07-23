@@ -1,6 +1,6 @@
-// lib/presentation/pages/edit_publicacion_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/publicacion_model.dart';
 import '../../core/models/bovino_model.dart';
 import '../controllers/edit_publicacion_controller.dart';
@@ -46,7 +46,7 @@ class EditPublicacionPage extends StatelessWidget {
                     actions: [
                       ElevatedButton(
                         onPressed: () {
-                          controller.updatePublicacion(publicacion.idCattle); // Cambia esto a idCattle
+                          controller.updatePublicacion(publicacion.idCattle);
                           Get.back();
                         },
                         child: Text('Guardar'),
@@ -125,7 +125,16 @@ class EditPublicacionPage extends StatelessWidget {
               SizedBox(height: 8.0),
               Container(
                 height: 200,
-                child: Center(child: Text(publicacion.ubicacion)), // Aquí podrías agregar un mapa
+                child: Obx(() => GoogleMap(
+                  onMapCreated: (GoogleMapController mapController) {
+                    controller.setMapController(mapController);
+                  },
+                  initialCameraPosition: CameraPosition(
+                    target: controller.selectedLocation.value,
+                    zoom: 15,
+                  ),
+                  markers: controller.markers.value,
+                )),
               ),
               SizedBox(height: 16.0),
               Text(
@@ -142,10 +151,10 @@ class EditPublicacionPage extends StatelessWidget {
               SizedBox(height: 8.0),
               ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage('https://example.com/profile.jpg'),
+                  backgroundImage: NetworkImage(publicacion.vendedorImageUrl.isNotEmpty ? publicacion.vendedorImageUrl : 'https://your-default-image-url.com/default_profile.jpg'),
                 ),
-                title: Text('Luis Alvarado'),
-                subtitle: Text('LuisAVC@gmail.com'),
+                title: Text(publicacion.vendedorNombre),
+                subtitle: Text(publicacion.vendedorEmail),
                 trailing: IconButton(
                   icon: Icon(Icons.call),
                   onPressed: () {

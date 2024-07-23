@@ -36,7 +36,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final String url = 'https://bovisales-backend.onrender.com/api/v1/user/login';
+    final String url = 'https://app.cristilex.com/api/v1/user/login';
 
     try {
       var headers = {

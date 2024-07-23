@@ -17,7 +17,7 @@ class VentasController extends GetxController {
   }
 
   Future<void> fetchPublicaciones() async {
-    final url = Uri.parse('https://bovisales-backend.onrender.com/api/posts/');
+    final url = Uri.parse('https://app.cristilex.com/api/posts/');
 
     try {
       final response = await http.get(url);

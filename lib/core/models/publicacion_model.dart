@@ -1,4 +1,3 @@
-// lib/core/models/publicacion_model.dart
 class Publicacion {
   final int idCattle;
   final String description;
@@ -7,7 +6,10 @@ class Publicacion {
   final String ubicacion;
   final String fecha;
   final String status;
-  final String imageUrl; // Nuevo campo para la URL de la imagen
+  final String imageUrl;
+  final String vendedorImageUrl;
+  final String vendedorNombre;
+  final String vendedorEmail;
 
   Publicacion({
     required this.idCattle,
@@ -17,7 +19,10 @@ class Publicacion {
     required this.ubicacion,
     required this.fecha,
     required this.status,
-    required this.imageUrl, // Inicialización del nuevo campo
+    required this.imageUrl,
+    required this.vendedorImageUrl,
+    required this.vendedorNombre,
+    required this.vendedorEmail,
   });
 
   factory Publicacion.fromJson(Map<String, dynamic> json) {
@@ -29,7 +34,10 @@ class Publicacion {
       ubicacion: json['ubicacion'] ?? 'Ubicación no disponible',
       fecha: json['fecha'] ?? 'Fecha no disponible',
       status: json['status'] ?? 'Estado no disponible',
-      imageUrl: json['imageUrl'] ?? '', // Asignación del nuevo campo
+      imageUrl: json['imageUrl'] ?? '',
+      vendedorImageUrl: json['vendedorImageUrl'] ?? 'https://static.vecteezy.com/system/resources/previews/010/871/350/original/3d-avatar-farmer-png.png',
+      vendedorNombre: json['vendedorNombre'] ?? 'Nombre no disponible',
+      vendedorEmail: json['vendedorEmail'] ?? 'Email no disponible',
     );
   }
 
@@ -42,7 +50,10 @@ class Publicacion {
       'ubicacion': ubicacion,
       'fecha': fecha,
       'status': status,
-      'imageUrl': imageUrl, // Conversión del nuevo campo a JSON
+      'imageUrl': imageUrl,
+      'vendedorImageUrl': vendedorImageUrl,
+      'vendedorNombre': vendedorNombre,
+      'vendedorEmail': vendedorEmail,
     };
   }
 }
