@@ -26,20 +26,19 @@ class PublicacionesPage extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
-                  title: Text('Mis Publicaciones', style: TextStyle(color: Colors.white)),
                   automaticallyImplyLeading: false,
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                ),
-                custom_search.SearchBar(
-                  controller: searchController.searchController.value,
-                  onSearch: (query) {
-                    // Implementa la lógica de búsqueda aquí
-                  },
-                  onFilter: () {
-                    // Implementa la lógica de filtrado aquí
-                  },
+                  title: custom_search.SearchBar(
+                    controller: searchController.searchController.value,
+                    onSearch: (query) {
+                      // Implementa la lógica de búsqueda aquí
+                    },
+                    onFilter: () {
+                      // Implementa la lógica de filtrado aquí
+                    },
+                  ),
                 ),
               ],
             ),
