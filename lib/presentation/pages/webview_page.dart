@@ -17,7 +17,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("WebView"),
+        title: Text("Pago"),
       ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),

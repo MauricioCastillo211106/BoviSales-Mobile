@@ -1,16 +1,16 @@
-// lib/presentation/pages/home_page.dart
+// lib/presentation/pages/venta_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/home_controller.dart';
+import '../../core/models/bovino_model.dart';
+import '../controllers/ventas_controller.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/custom_search_controller.dart' as custom;
 import '../widgets/custom_bottom_navigation_bar.dart';
+import '../widgets/venta_card.dart';
 import '../widgets/search_bar.dart' as custom_search;
-import '../widgets/bovino_card.dart'; // Asegúrate de importar BovinoCard
-import 'bovino_details_page.dart'; // Importa la página de detalles
 
-class HomePage extends StatelessWidget {
-  final HomeController homeController = Get.put(HomeController());
+class VentaPage extends StatelessWidget {
+  final VentasController ventasController = Get.put(VentasController());
   final NavigationController navigationController = Get.find<NavigationController>();
   final custom.CustomSearchController searchController = Get.put(custom.CustomSearchController());
 
@@ -25,20 +25,19 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
-                  title: Text('Mi Ganado', style: TextStyle(color: Colors.white)),
                   automaticallyImplyLeading: false,
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                ),
-                custom_search.SearchBar(
-                  controller: searchController.searchController.value,
-                  onSearch: (query) {
-                    // Implementa la lógica de búsqueda aquí
-                  },
-                  onFilter: () {
-                    // Implementa la lógica de filtrado aquí
-                  },
+                  title: custom_search.SearchBar(
+                    controller: searchController.searchController.value,
+                    onSearch: (query) {
+                      // Implementa la lógica de búsqueda aquí
+                    },
+                    onFilter: () {
+                      // Implementa la lógica de filtrado aquí
+                    },
+                  ),
                 ),
               ],
             ),
@@ -47,7 +46,7 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                Get.toNamed('/add_cow');
+                // Acción para agregar una nueva publicación
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFC67C4E),
@@ -56,32 +55,26 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Agregar a tu bovino',
+                'Bovinos en venta',
                 style: TextStyle(color: Colors.white),
               ),
             ),
           ),
           Expanded(
             child: Obx(() {
-              if (homeController.bovinos.isEmpty) {
-                return Center(child: Text('No hay bovinos disponibles'));
+              if (ventasController.publicacionesConBovinos.isEmpty) {
+                return Center(child: Text('No hay publicaciones disponibles'));
               } else {
-                return GridView.builder(
+                return ListView.builder(
                   padding: const EdgeInsets.all(16.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: homeController.bovinos.length,
+                  itemCount: ventasController.publicacionesConBovinos.length,
                   itemBuilder: (context, index) {
-                    final bovino = homeController.bovinos[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(() => BovinoDetailsPage(bovino: bovino));
-                      },
-                      child: BovinoCard(bovino: bovino),
+                    final item = ventasController.publicacionesConBovinos[index];
+                    final publicacion = item['publicacion'] as Publicacion;
+                    final bovino = item['bovino'] as Bovino;
+                    return VentaCard(
+                      bovino: bovino,
+                      precio: publicacion.precio.toString(),
                     );
                   },
                 );

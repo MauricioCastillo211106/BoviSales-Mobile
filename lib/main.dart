@@ -1,6 +1,6 @@
 // lib/main.dart
-import 'package:bovi_sales/presentation/bindings/crear_publicacion_binding.dart';
-import 'package:bovi_sales/presentation/controllers/publicaciones_controller.dart';
+import 'package:bovi_sales/presentation/bindings/publicaciones_binding.dart';
+import 'package:bovi_sales/presentation/bindings/ventas_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,10 +20,11 @@ import 'presentation/pages/profile_page.dart';
 import 'presentation/pages/home_page.dart';
 import 'presentation/pages/add_cow_page.dart';
 import 'presentation/pages/publicaciones_page.dart';
-import 'presentation/pages/ganado_page.dart';
 import 'presentation/pages/premium_page.dart';
 import 'presentation/pages/webview_page.dart';
-import 'presentation/pages/crear_publicacion_page.dart'; // Importa la página de creación de publicación
+import 'presentation/pages/edit_bovino_page.dart';
+import 'presentation/pages/ventas_page.dart';
+import 'presentation/bindings/edit_bovino_binding.dart';
 
 void main() async {
   await GetStorage.init(); // Inicializa GetStorage
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'BoviSales',
       debugShowCheckedModeBanner: false,
-      initialBinding: NavigationBinding(), // Asegúrate de inicializar InitialBinding aquí
+      initialBinding: NavigationBinding(),
       initialRoute: storage.read('user') != null ? '/home' : '/',
       getPages: [
         GetPage(
@@ -69,13 +70,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/publicaciones',
           page: () => PublicacionesPage(),
-          binding: BindingsBuilder(() {
-            Get.lazyPut(() => PublicacionesController());
-          }),
+          binding: PublicacionesBinding(),
         ),
         GetPage(
           name: '/venta',
-          page: () => GanadoPage(),
+          page: () => VentaPage(),
+          binding: VentasBinding(),
         ),
         GetPage(
           name: '/add_cow',
@@ -83,9 +83,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/bovino_details',
-          page: () => BovinoDetailsPage(bovino: Bovino(
-              id: '', name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', imageUrl: ''
-          )),
+          page: () => BovinoDetailsPage(bovino: Bovino(name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', id: '')),
         ),
         GetPage(
           name: '/premium',
@@ -94,14 +92,12 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/webview',
-          page: () => WebViewPage(url: '',),
+          page: () => WebViewPage(url: ''),
         ),
         GetPage(
-          name: '/crear_publicacion',
-          page: () => CrearPublicacionPage(bovino: Bovino(
-              id: '', name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', imageUrl: ''
-          )),
-          binding: CrearPublicacionBinding(),
+          name: '/edit_bovino',
+          page: () => EditBovinoPage(bovino: Bovino(name: '', breed: '', earringNumber: 0, age: 0, gender: '', weight: '', id: '')),
+          binding: EditBovinoBinding(),
         ),
       ],
       theme: ThemeData(

@@ -45,4 +45,9 @@ class Bovino {
       'imageUrl': imageUrl,
     };
   }
+
+  @override
+  String toString() {
+    return 'Bovino{id: $id, name: $name, breed: $breed, earringNumber: $earringNumber, age: $age, gender: $gender, weight: $weight, imageUrl: $imageUrl}';
+  }
 }

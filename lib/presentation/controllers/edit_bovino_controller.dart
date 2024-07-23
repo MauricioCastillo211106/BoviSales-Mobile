@@ -1,57 +1,56 @@
 // lib/presentation/controllers/edit_bovino_controller.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../core/models/bovino_model.dart';
+import 'package:http/http.dart' as http;
 
 class EditBovinoController extends GetxController {
-  var bovino = Bovino(
-    id: '',
-    name: '',
-    breed: '',
-    earringNumber: 0,
-    age: 0,
-    gender: '',
-    weight: '',
-    imageUrl: '',
-  ).obs;
+  final Bovino bovino;
 
-  void setBovino(Bovino bovino) {
-    this.bovino.value = bovino;
+  EditBovinoController(this.bovino);
+
+  final nameController = TextEditingController();
+  final breedController = TextEditingController();
+  final weightController = TextEditingController();
+  final ageController = TextEditingController();
+  final genderController = TextEditingController();
+  final earringNumberController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    nameController.text = bovino.name;
+    breedController.text = bovino.breed;
+    weightController.text = bovino.weight.toString();
+    ageController.text = bovino.age.toString();
+    genderController.text = bovino.gender;
+    earringNumberController.text = bovino.earringNumber.toString();
   }
 
   Future<void> updateBovino() async {
-    final headers = {
-      'Content-Type': 'application/json'
-    };
+    final updatedBovino = Bovino(
+      id: bovino.id,
+      name: nameController.text,
+      breed: breedController.text,
+      weight: weightController.text,
+      age: int.parse(ageController.text),
+      gender: genderController.text,
+      earringNumber: int.parse(earringNumberController.text),
+      imageUrl: bovino.imageUrl,
+    );
 
-    final body = json.encode({
-      "name": bovino.value.name,
-      "weight": double.tryParse(bovino.value.weight) ?? 0,
-      "earringNumber": bovino.value.earringNumber,
-      "age": bovino.value.age,
-      "gender": bovino.value.gender,
-      "breed": bovino.value.breed,
-      "image": bovino.value.imageUrl,
-    });
+    final url = Uri.parse('https://bovisales-backend.onrender.com/api/v1/Cattle/put/${bovino.id}');
 
-    final url = Uri.parse('https://bovisales-backend.onrender.com/api/v1/Cattle/put/${bovino.value.id}');
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: updatedBovino.toJson(),
+    );
 
-    print('URL: $url'); // Imprime la URL para depuración
-
-    try {
-      final response = await http.put(url, headers: headers, body: body);
-
-      if (response.statusCode == 200) {
-        // Actualización exitosa
-        print('Bovino actualizado correctamente');
-        Get.back();
-      } else {
-        // Error en la actualización
-        print('Error actualizando bovino: ${response.statusCode} - ${response.reasonPhrase}');
-      }
-    } catch (e) {
-      print('Error realizando la solicitud: $e');
+    if (response.statusCode == 200) {
+      Get.back(result: updatedBovino);
+    } else {
+      Get.snackbar('Error', 'No se pudo actualizar el bovino');
     }
   }
 }

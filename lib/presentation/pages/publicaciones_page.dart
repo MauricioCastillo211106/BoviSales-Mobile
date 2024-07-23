@@ -26,6 +26,7 @@ class PublicacionesPage extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
+                  title: Text('Mis Publicaciones', style: TextStyle(color: Colors.white)),
                   automaticallyImplyLeading: false,
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
